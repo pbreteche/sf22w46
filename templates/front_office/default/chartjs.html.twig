@@ -1,5 +1,17 @@
 {% extends 'front_office/front_office_layout.html.twig' %}
 
+{% block first_column %}
+    <div {{ stimulus_controller('toggle') }}>
+        <button {{ stimulus_action('dblclick->toggle', 'toggleAction') }}>Toggle</button>
+        <p {{ stimulus_target('toggle', 'toggleElt') }}>On me voit (fonction Twig/Stimulus)</p>
+    </div>
+
+    <div data-controller="toggle">
+        <button data-action="dblclick->toggle#toggleAction">Toggle</button>
+        <p data-toggle-target="toggleElt">On me voit (data-attributes)</p>
+    </div>
+{% endblock %}
+
 {% block second_column %}
     {{ render_chart(chart) }}
 {% endblock %}
