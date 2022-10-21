@@ -20,7 +20,18 @@ class AuthoringController extends AbstractController
     public function new(Request $request): Response
     {
         $article = new Article();
-        $form = $this->createForm(ArticleType::class, $article);
+        $form = $this->createForm(ArticleType::class, $article, [
+            'with_comment' => true,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($article);
+            if ($form->has('comment')) {
+                dump($form->get('comment')->getData());
+            }
+        }
 
         return $this->renderForm('back_office/authoring/new.html.twig', [
             'create_form' => $form,
