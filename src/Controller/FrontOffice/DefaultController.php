@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\FrontOffice;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -31,12 +31,12 @@ class DefaultController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            return $this->render('default/post_index.html.twig', [
+            return $this->render('front_office/default/post_index.html.twig', [
                 'data' => $data,
             ]);
         }
 
-        return $this->render('default/index.html.twig', [
+        return $this->render('front_office/default/index.html.twig', [
             'message' => 'Bonjour <script>console.log(\'coucou\');</script>',
             'demo_form' => $form->createView(),
         ]);

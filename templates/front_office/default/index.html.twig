@@ -1,12 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'front_office/front_office_layout.html.twig' %}
 
 {# Redéfinition d'un block du template parent #}
-{% block body %}
-    {{ message }}
+{% block second_column %}
     <div data-controller="hello" class="text-primary">UX</div>
     <button class="btn btn-lg btn-danger">Un bouton</button>
     {{ form_start(demo_form) }}
         {{ form_widget(demo_form) }}
         <button class="btn btn-primary">Valider</button>
     {{ form_end(demo_form) }}
+{% endblock second_column %}
+
+{% block first_column %}
+    {{ message }}
 {% endblock %}

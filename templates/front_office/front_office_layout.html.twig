@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md4">
+            {% block first_column %}{% endblock %}
+        </div>
+        <div class="col-md8">
+            {% block second_column %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
