@@ -1,0 +1,6 @@
+{% use 'bootstrap_5_layout.html.twig' %}
+
+{% block date_widget %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' my-custom-class')|trim}) -%}
+    {{ parent() }}
+{% endblock %}
