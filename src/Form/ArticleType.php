@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +15,14 @@ class ArticleType extends AbstractType
         $builder
             ->add('title')
             ->add('body')
-            ->add('publishedAt')
+            ->add('publishedAt', DateType::class, [
+                'widget' => 'single_text',
+                'input' => 'datetime_immutable',
+                'attr' => [
+                    'class' => 'publication',
+                ],
+                'priority' => 10,
+            ])
         ;
     }
 
