@@ -4,3 +4,11 @@
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' my-custom-class')|trim}) -%}
     {{ parent() }}
 {% endblock %}
+
+{% block comment_widget %}
+    {% if multiline %}
+        {{ block('textarea_widget') }}
+    {% else %}
+        {{ block('form_widget') }}
+    {% endif %}
+{% endblock %}

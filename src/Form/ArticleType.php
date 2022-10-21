@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,8 +27,9 @@ class ArticleType extends AbstractType
         ;
 
         if ($options['with_comment']) {
-            $builder->add('comment', TextType::class, [
+            $builder->add('comment', CommentType::class, [
                 'mapped' => false,
+                'multiline' => true,
             ]);
         }
     }
@@ -41,6 +41,8 @@ class ArticleType extends AbstractType
             'with_comment' => false,
         ]);
 
-        $resolver->setAllowedTypes('with_comment', 'bool');
+        $resolver
+            ->setAllowedTypes('with_comment', 'bool')
+        ;
     }
 }
