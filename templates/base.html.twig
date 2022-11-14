@@ -14,8 +14,10 @@
         {% endblock %}
     </head>
     <body>
-
+    <header>
     <img src="{{ asset('build/images/naga44.svg') }}" alt="Naga logo" height="45">
+        {{ include('includes/_locale_selector.html.twig') }}
+    </header>
     {% block body %}{% endblock %}
     </body>
 </html>

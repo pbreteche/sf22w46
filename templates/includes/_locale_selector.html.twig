@@ -1,0 +1,14 @@
+<form>
+    <div class="form-group">
+        <select name="_locale" class="form-select-sm">
+            {% for locale in enabled_locales %}
+                <option value="{{ locale }}"
+                        {%- if locale is same as(app.request.locale) %} selected{% endif -%}
+                >
+                    {{- locale|language_name|title -}}
+                </option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-primary">Sélectionner</button>
+    </div>
+</form>
