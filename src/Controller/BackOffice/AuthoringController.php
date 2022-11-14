@@ -41,4 +41,24 @@ class AuthoringController extends AbstractController
             'create_form' => $form,
         ]);
     }
+
+    /**
+     * @Route("/{id}/edit", methods={"GET", "POST"}, requirements={"id": "\d+"})
+     */
+    public function edit(
+        Request $request,
+        Article $article,
+        EntityManagerInterface $manager
+    ): Response {
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->flush($article);
+        }
+
+        return $this->renderForm('back_office/authoring/edit.html.twig', [
+            'form' => $form
+        ]);
+    }
 }
