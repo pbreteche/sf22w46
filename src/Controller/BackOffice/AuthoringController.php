@@ -4,6 +4,7 @@ namespace App\Controller\BackOffice;
 
 use App\Entity\Article;
 use App\Form\ArticleType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ class AuthoringController extends AbstractController
     /**
      * @Route("/new", methods={"GET", "POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article, [
@@ -31,6 +32,9 @@ class AuthoringController extends AbstractController
             if ($form->has('comment')) {
                 dump($form->get('comment')->getData());
             }
+
+            $manager->persist($article);
+            $manager->flush();
         }
 
         return $this->renderForm('back_office/authoring/new.html.twig', [
