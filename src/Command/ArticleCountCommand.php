@@ -28,26 +28,41 @@ class ArticleCountCommand extends Command
     {
         $this
             ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            ->addOption(
+                'published-at',
+                'p',
+                InputOption::VALUE_OPTIONAL,
+                'Count article published at this date, default is today',
+                false
+            )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+        $publishedAtOption = $input->getOption('published-at');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        if (false === $publishedAtOption) {
+            $count = $this->repository->count([]);
+            $io->success(sprintf('You have %d article(s) in database.', $count));
+
+            return Command::SUCCESS;
         }
 
-        if ($input->getOption('option1')) {
-            // ...
+        if (is_null($publishedAtOption)) {
+            $publishedAtOption = 'today';
         }
 
-        $count = $this->repository->count([]);
+        try {
+            $publishedAt = new \DateTimeImmutable($publishedAtOption);
+        } catch (\Throwable $e) {
+            $io->error('L\'option published-at ne contient pas un format de date valide : '.$publishedAtOption);
+            return Command::INVALID;
+        }
 
-        $io->success(sprintf('You have %d article(s) in database.', $count));
+        $count = $this->repository->countPublishedAt($publishedAt);
+        $io->success(sprintf('You have %d article(s) in database published at %s.', $count, $publishedAt->format('Y-m-d')));
 
         return Command::SUCCESS;
     }
