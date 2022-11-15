@@ -17,7 +17,7 @@ class ArticleType extends AbstractType
         $builder
             ->add('title')
             ->add('body')
-            ->add('keywords', SpaceDelimitedType::class)
+            ->add('keywords')
             ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
                 $article = $event->getData();
                 $form = $event->getForm();
