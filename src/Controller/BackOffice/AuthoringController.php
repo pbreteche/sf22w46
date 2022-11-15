@@ -28,11 +28,6 @@ class AuthoringController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($article);
-            if ($form->has('comment')) {
-                dump($form->get('comment')->getData());
-            }
-
             $manager->persist($article);
             $manager->flush();
         }

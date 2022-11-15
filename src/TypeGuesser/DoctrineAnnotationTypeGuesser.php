@@ -19,6 +19,9 @@ class DoctrineAnnotationTypeGuesser extends DoctrineOrmTypeGuesser implements Fo
         /** @var $metadata ClassMetadata */
         [$metadata, $name] = $ret;
 
+        if (!$metadata) {
+            return null;
+        }
 
         if (Types::SIMPLE_ARRAY === $metadata->getTypeOfField($property)) {
             return new TypeGuess(SpaceDelimitedType::class, [], Guess::VERY_HIGH_CONFIDENCE);
