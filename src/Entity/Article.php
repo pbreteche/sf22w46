@@ -32,6 +32,11 @@ class Article
      */
     private $publishedAt;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $keywords = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Article
     public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    public function getKeywords(): ?array
+    {
+        return $this->keywords;
+    }
+
+    public function setKeywords(?array $keywords): self
+    {
+        $this->keywords = $keywords;
 
         return $this;
     }
