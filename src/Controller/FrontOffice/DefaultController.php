@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -48,30 +50,39 @@ class DefaultController extends AbstractController
     /**
      * @Route("/ux/chart")
      */
-    public function chartjs(ChartBuilderInterface $chartBuilder): Response
-    {
-        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+    public function chartjs(
+        ChartBuilderInterface $chartBuilder,
+        CacheInterface $myCachePool
+    ): Response {
 
-        $chart->setData([
-            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            'backgroundColor' => 'rgb(255, 99, 132)',
-            'borderColor' => 'rgb(255, 99, 132)',
-            'datasets' => [
-                [
-                    'label' => 'Cookies eaten 🍪',
-                    'data' => [2, 10, 5, 18, 20, 30, 45],
-                    'backgroundColor' => 'red',
-                    'borderColor' => 'darkred',
-                    'cubicInterpolationMode' => 'monotone',
+        $chart = $myCachePool->get('chart', function(ItemInterface $item) use ($chartBuilder) {
+            $item->expiresAfter(30);
+
+            $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+
+            $chart->setData([
+                'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                'backgroundColor' => 'rgb(255, 99, 132)',
+                'borderColor' => 'rgb(255, 99, 132)',
+                'datasets' => [
+                    [
+                        'label' => 'Cookies eaten 🍪',
+                        'data' => [2, 10, 5, 18, 20, 30, 45],
+                        'backgroundColor' => 'red',
+                        'borderColor' => 'darkred',
+                        'cubicInterpolationMode' => 'monotone',
+                    ],
+                    [
+                        'label' => 'Km walked 🏃‍♀️',
+                        'data' => [10, 15, 4, 3, 25, 41, 25],
+                        'backgroundColor' => 'blue',
+                        'borderColor' => 'darkblue'
+                    ],
                 ],
-                [
-                    'label' => 'Km walked 🏃‍♀️',
-                    'data' => [10, 15, 4, 3, 25, 41, 25],
-                    'backgroundColor' => 'blue',
-                    'borderColor' => 'darkblue'
-                ],
-            ],
-        ]);
+            ]);
+
+            return $chart;
+        });
 
         return $this->render('front_office/default/chartjs.html.twig', [
             'chart' => $chart,
