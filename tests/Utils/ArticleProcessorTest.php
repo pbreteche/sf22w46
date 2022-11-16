@@ -21,13 +21,14 @@ class ArticleProcessorTest extends TestCase
 
         $this->assertInstanceOf(\DateInterval::class, $result, 'Result should be a DateInterval instance');
         $this->assertEquals($expected, $result->days, sprintf('There should be %d days between %s and %s', $expected, $input1, $input2));
+        $this->markTestIncomplete('Should test start and end date identical');
     }
 
     public function timeDiffProvider()
     {
         return [
-            ['2022-11-14', '2022-11-17', 2],
-            ['2022-11-18', '2022-11-11', 7],
+            'dates in natural order' => ['2022-11-14', '2022-11-17', 3],
+            'dates in reverse order' => ['2022-11-18', '2022-11-11', 7],
         ];
     }
 }
