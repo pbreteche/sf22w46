@@ -1,0 +1,4 @@
+#services:
+#  Psr\Log\LoggerInterface:
+#    alias: monolog.logger
+#    public: true
